@@ -68,10 +68,12 @@ const isCollapse = computed(() => {
   }
 }
 
-.a-menu {
+.ant-menu {
   border: none;
-  min-height: 100%;
+  // min-height: 100%;
+  height: calc(100vh - var(--v3-header-height));
   width: 100% !important;
+  overflow-y: auto;
 }
 
 :deep(.a-menu-item),

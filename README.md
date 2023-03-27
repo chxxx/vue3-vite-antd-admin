@@ -1,160 +1,46 @@
-<div align="center">
-  <img alt="V3 Admin Vite Logo" width="120" height="120" src="./src/assets/layout/logo.png">
-  <h1>V3 Admin Vite</h1>
-  <span>English | <a href="./README.zh-CN.md">中文</a></span>
-</div>
+# vue3-vite-antd-admin
 
-## ⚡ Introduction
+This template should help get you started developing with Vue 3 in Vite.
 
-v3-admin-vite is a free and open source middle and background management system basic solution, based on mainstream framework such as Vue3, TypeScript, Element Plus, Pinia and Vite.
+## Recommended IDE Setup
 
-- Vue-Cli 5.x: [v3-admin](https://github.com/un-pany/v3-admin)
-- Electron desktop: [v3-electron-vite](https://github.com/un-pany/v3-electron-vite)
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-## Feature
+## Type Support for `.vue` Imports in TS
 
-- **Vue3**：The latest Vue3 composition API using Vue3 + script setup
-- **Element Plus**：Vue3 version of Element UI
-- **Pinia**: An alternative to Vuex in Vue3
-- **Vite**：Really fast
-- **Vue Router**：router
-- **TypeScript**：JavaScript With Syntax For Types
-- **PNPM**：Faster, disk space saving package management tool
-- **Scss**：Consistent with Element Plus
-- **CSS variable**：Mainly controls the layout and color of the item
-- **ESlint**：Code verification
-- **Prettier**： Code formatting
-- **Axios**: Promise based HTTP client (encapsulated)
-- **UnoCSS**: Real-time atomized CSS engine with high performance and flexibility
-- **Annotation**：Each configuration item is written with as detailed comments as possible
-- **Mobile Compatible**: The layout is compatible with mobile page resolution
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
-## Functions
+If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
-- **User management**: log in, log out of the demo
-- **Authority management**: Built-in page permissions (dynamic routing), instruction permissions, permission functions
-- **Multiple Environments**: Development, Staging, Production
-- **Multiple themes**: Normal, Dark, Dark Blue, theme modes
-- **Error page**: 403, 404
-- **Dashboard**: Display different Dashboard pages according to different users
-- **Other functions**：SVG, Dynamic Sidebar, Dynamic Breadcrumb Navigation, Tabbed Navigation, Screenfull, Adaptive Shrink Sidebar
+1. Disable the built-in TypeScript Extension
+   1. Run `Extensions: Show Built-in Extensions` from VSCode's command palette
+   2. Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
+2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
-## 📚 Document
+## Customize configuration
 
-[Chinese documentation](https://juejin.cn/post/7089377403717287972)
+See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-[Chinese getting started tutorial](https://juejin.cn/column/7207659644487139387)
+## Project Setup
 
-## Gitee repository
+```sh
+pnpm install
+```
 
-[Gitee](https://gitee.com/un-pany/v3-admin-vite)
+### Compile and Hot-Reload for Development
 
-## Online preview
-
-| Location     | account             | Link                                            |
-| ------------ | ------------------- | ----------------------------------------------- |
-| github-pages | `admin` or `editor` | [Link](https://un-pany.github.io/v3-admin-vite) |
-
-## 🚀 Development
-
-```bash
-# configure
-1. installation of the recommended plugins in the .vscode directory
-3. node version 16+
-4. pnpm version 7.x
-
-# clone
-git clone https://github.com/un-pany/v3-admin-vite.git
-
-# enter the project directory
-cd v3-admin-vite
-
-# install dependencies
-pnpm i
-
-# start the service
+```sh
 pnpm dev
 ```
 
-## ✔️ Preview
+### Type-Check, Compile and Minify for Production
 
-```bash
-# stage environment
-pnpm preview:stage
-
-# prod environment
-pnpm preview:prod
+```sh
+pnpm build
 ```
 
-## 📦️ Multi-environment packaging
+### Lint with [ESLint](https://eslint.org/)
 
-```bash
-# build the stage environment
-pnpm build:stage
-
-# build the prod environment
-pnpm build:prod
-```
-
-## 🔧 Code inspection
-
-```bash
-# code formatting
+```sh
 pnpm lint
-
-# unit test
-pnpm test
 ```
-
-## Git commit specification reference
-
-- `feat` add new functions
-- `fix` Fix issues/bugs
-- `perf` Optimize performance
-- `style` Change the code style without affecting the running result
-- `refactor` Re-factor code
-- `revert` Undo changes
-- `test` Test related, does not involve changes to business code
-- `docs` Documentation and Annotation
-- `chore` Updating dependencies/modifying scaffolding configuration, etc.
-- `workflow` Work flow Improvements
-- `ci` CICD
-- `types` Type definition
-- `wip` In development
-
-## Project preview
-
-![preview1.png](./src/assets/docs/preview1.png)
-![preview2.png](./src/assets/docs/preview2.png)
-![preview3.png](./src/assets/docs/preview3.png)
-
-## 💕 Contributors
-
-Thanks to all the contributors!
-
-<a href="https://github.com/un-pany/v3-admin-vite/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=un-pany/v3-admin-vite" />
-</a>
-
-## 💕 Thanks for the sponsorship (the cost of sponsorship was used to send red envelopes in the group~)
-
-| Name                                               | Avatar                                                                                        |
-| -------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| <a href="https://github.com/a3305278">a3305278</a> | <img src="https://avatars.githubusercontent.com/u/30458650?v=4" width="64px" height="64px" /> |
-
-## 💕 Thanks star
-
-Small projects are not easy to get a star, if you like this project, welcome to support a star! This is the only motivation for the author to maintain it on an ongoing basis (whisper: it's free after all)
-
-## Group
-
-QQ group：1014374415 (left) && add me on WeChat，Invite you to join WeChat group (right)
-
-![qq.png](./src/assets/docs/qq.png)
-![wechat.png](./src/assets/docs/wechat.png)
-
-## 📄 License
-
-[MIT](./LICENSE)
-
-Copyright (c) 2022 [pany](https://github.com/pany-ang)
