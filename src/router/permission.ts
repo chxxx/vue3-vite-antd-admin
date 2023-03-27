@@ -1,7 +1,7 @@
 import router from "@/router"
 import { useUserStoreHook } from "@/store/modules/user"
 import { usePermissionStoreHook } from "@/store/modules/permission"
-import { ElMessage } from "element-plus"
+import { message } from "ant-design-vue"
 import { whiteList } from "@/config/white-list"
 import { getToken } from "@/utils/cache/cookies"
 import asyncRouteSettings from "@/config/async-route"
@@ -45,7 +45,7 @@ router.beforeEach(async (to, _from, next) => {
         } catch (err: any) {
           // 过程中发生任何错误，都直接重置 Token，并重定向到登录页面
           userStore.resetToken()
-          ElMessage.error(err.message || "路由守卫过程发生错误")
+          message.error(err.message || "路由守卫过程发生错误")
           next("/login")
           NProgress.done()
         }

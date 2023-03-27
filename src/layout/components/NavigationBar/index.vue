@@ -4,12 +4,10 @@ import { useRouter } from "vue-router"
 import { useAppStore } from "@/store/modules/app"
 import { useSettingsStore } from "@/store/modules/settings"
 import { useUserStore } from "@/store/modules/user"
-import { UserFilled } from "@element-plus/icons-vue"
+import { UsbFilled } from "@ant-design/icons-vue"
 import Breadcrumb from "../Breadcrumb/index.vue"
 import Hamburger from "../Hamburger/index.vue"
-import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
 import Screenfull from "@/components/Screenfull/index.vue"
-import Notify from "@/components/Notify/index.vue"
 
 const router = useRouter()
 const appStore = useAppStore()
@@ -19,12 +17,12 @@ const userStore = useUserStore()
 const sidebar = computed(() => {
   return appStore.sidebar
 })
-const showNotify = computed(() => {
-  return settingsStore.showNotify
-})
-const showThemeSwitch = computed(() => {
-  return settingsStore.showThemeSwitch
-})
+// const showNotify = computed(() => {
+//   return settingsStore.showNotify
+// })
+// const showThemeSwitch = computed(() => {
+//   return settingsStore.showThemeSwitch
+// })
 const showScreenfull = computed(() => {
   return settingsStore.showScreenfull
 })
@@ -44,30 +42,30 @@ const logout = () => {
     <Breadcrumb class="breadcrumb" />
     <div class="right-menu">
       <Screenfull v-if="showScreenfull" class="right-menu-item" />
-      <ThemeSwitch v-if="showThemeSwitch" class="right-menu-item" />
-      <Notify v-if="showNotify" class="right-menu-item" />
-      <el-dropdown class="right-menu-item">
+      <!-- <ThemeSwitch v-if="showThemeSwitch" class="right-menu-item" />
+      <Notify v-if="showNotify" class="right-menu-item" /> -->
+      <a-dropdown class="right-menu-item">
         <div class="right-menu-avatar">
-          <el-avatar :icon="UserFilled" :size="30" />
+          <a-avatar :icon="UsbFilled" :size="30" />
           <span>{{ userStore.username }}</span>
         </div>
         <template #dropdown>
-          <el-dropdown-menu>
+          <a-menu>
             <a target="_blank" href="https://juejin.cn/post/7089377403717287972">
-              <el-dropdown-item>中文文档</el-dropdown-item>
+              <a-menu-item>中文文档</a-menu-item>
             </a>
             <a target="_blank" href="https://github.com/un-pany/v3-admin-vite">
-              <el-dropdown-item>GitHub</el-dropdown-item>
+              <a-menu-item>GitHub</a-menu-item>
             </a>
             <a target="_blank" href="https://gitee.com/un-pany/v3-admin-vite">
-              <el-dropdown-item>Gitee</el-dropdown-item>
+              <a-menu-item>Gitee</a-menu-item>
             </a>
-            <el-dropdown-item divided @click="logout">
+            <a-menu-item divided @click="logout">
               <span style="display: block">退出登录</span>
-            </el-dropdown-item>
-          </el-dropdown-menu>
+            </a-menu-item>
+          </a-menu>
         </template>
-      </el-dropdown>
+      </a-dropdown>
     </div>
   </div>
 </template>
@@ -105,7 +103,7 @@ const logout = () => {
       .right-menu-avatar {
         display: flex;
         align-items: center;
-        .el-avatar {
+        .a-avatar {
           margin-right: 10px;
         }
         span {

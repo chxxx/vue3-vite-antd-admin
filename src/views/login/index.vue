@@ -2,9 +2,9 @@
 import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useUserStore } from "@/store/modules/user"
-import { User, Lock, Key, Picture, Loading } from "@element-plus/icons-vue"
+import { UserOutlined, LockOutlined } from "@ant-design/icons-vue"
 import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
-import { type FormInstance, FormRules } from "element-plus"
+import { type FormInstance } from "ant-design-vue"
 import { getLoginCodeApi } from "@/api/login"
 import { type ILoginRequestData } from "@/api/login/types/login"
 
@@ -22,39 +22,39 @@ const loginForm: ILoginRequestData = reactive({
   code: ""
 })
 /** 登录表单校验规则 */
-const loginFormRules: FormRules = {
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-  password: [
-    { required: true, message: "请输入密码", trigger: "blur" },
-    { min: 8, max: 16, message: "长度在 8 到 16 个字符", trigger: "blur" }
-  ],
-  code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
-}
+// const loginFormRules: Rule = {
+//   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+//   password: [
+//     { required: true, message: "请输入密码", trigger: "blur" },
+//     { min: 8, max: 16, message: "长度在 8 到 16 个字符", trigger: "blur" }
+//   ],
+//   code: [{ required: true, message: "请输入验证码", trigger: "blur" }]
+// }
 /** 登录逻辑 */
 const handleLogin = () => {
-  loginFormRef.value?.validate((valid: boolean) => {
-    if (valid) {
-      loading.value = true
-      useUserStore()
-        .login({
-          username: loginForm.username,
-          password: loginForm.password,
-          code: loginForm.code
-        })
-        .then(() => {
-          router.push({ path: "/" })
-        })
-        .catch(() => {
-          createCode()
-          loginForm.password = ""
-        })
-        .finally(() => {
-          loading.value = false
-        })
-    } else {
-      return false
-    }
-  })
+  // loginFormRef.value?.validate((valid: boolean) => {
+  //   if (valid) {
+  loading.value = true
+  useUserStore()
+    .login({
+      username: loginForm.username,
+      password: loginForm.password,
+      code: loginForm.code
+    })
+    .then(() => {
+      router.push({ path: "/" })
+    })
+    .catch(() => {
+      createCode()
+      loginForm.password = ""
+    })
+    .finally(() => {
+      loading.value = false
+    })
+  // } else {
+  //   return false
+  // }
+  // })
 }
 /** 创建验证码 */
 const createCode = () => {
@@ -79,14 +79,14 @@ createCode()
         <img src="@/assets/layout/logo-text-2.png" />
       </div>
       <div class="content">
-        <el-form ref="loginFormRef" :model="loginForm" :rules="loginFormRules" @keyup.enter="handleLogin">
+        <el-form ref="loginFormRef" :model="loginForm" @keyup.enter="handleLogin">
           <el-form-item prop="username">
             <el-input
               v-model.trim="loginForm.username"
               placeholder="用户名"
               type="text"
               tabindex="1"
-              :prefix-icon="User"
+              :prefix-icon="UserOutlined"
               size="large"
             />
           </el-form-item>
@@ -96,12 +96,12 @@ createCode()
               placeholder="密码"
               type="password"
               tabindex="2"
-              :prefix-icon="Lock"
+              :prefix-icon="LockOutlined"
               size="large"
               show-password
             />
           </el-form-item>
-          <el-form-item prop="code">
+          <!-- <el-form-item prop="code">
             <el-input
               v-model.trim="loginForm.code"
               placeholder="验证码"
@@ -122,7 +122,7 @@ createCode()
                 </el-image>
               </template>
             </el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-button :loading="loading" type="primary" size="large" @click.prevent="handleLogin"> 登 录 </el-button>
         </el-form>
       </div>

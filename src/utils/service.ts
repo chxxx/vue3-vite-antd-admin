@@ -1,6 +1,6 @@
 import axios, { type AxiosInstance, type AxiosRequestConfig } from "axios"
 import { useUserStoreHook } from "@/store/modules/user"
-import { ElMessage } from "element-plus"
+import { message } from "ant-design-vue"
 import { get } from "lodash-es"
 import { getToken } from "./cache/cookies"
 
@@ -23,7 +23,7 @@ function createService() {
       const code = apiData.code
       // 如果没有 Code, 代表这不是项目后端开发的 API
       if (code === undefined) {
-        ElMessage.error("非本系统的接口")
+        message.error("非本系统的接口")
         return Promise.reject(new Error("非本系统的接口"))
       } else {
         switch (code) {
@@ -32,7 +32,7 @@ function createService() {
             return apiData
           default:
             // 不是正确的 Code
-            ElMessage.error(apiData.message || "Error")
+            message.error(apiData.message || "Error")
             return Promise.reject(new Error("Error"))
         }
       }
@@ -79,7 +79,7 @@ function createService() {
         default:
           break
       }
-      ElMessage.error(error.message)
+      message.error(error.message)
       return Promise.reject(error)
     }
   )

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { ref, onUnmounted } from "vue"
-import { ElMessage } from "element-plus"
+import { message } from "ant-design-vue"
 import screenfull from "screenfull"
 
 const props = defineProps({
@@ -27,7 +27,7 @@ const isFullscreen = ref<boolean>(false)
 const click = () => {
   const dom = document.querySelector(props.element) || undefined
   if (!screenfull.isEnabled) {
-    ElMessage.warning("您的浏览器无法工作")
+    message.warning("您的浏览器无法工作")
     return
   }
   screenfull.toggle(dom)
