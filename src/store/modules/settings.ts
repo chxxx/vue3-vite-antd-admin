@@ -8,7 +8,6 @@ export const useSettingsStore = defineStore("settings", () => {
   const showTagsView = ref<boolean>(layoutSettings.showTagsView)
   const showSidebarLogo = ref<boolean>(layoutSettings.showSidebarLogo)
   const showNotify = ref<boolean>(layoutSettings.showNotify)
-  const showThemeSwitch = ref<boolean>(layoutSettings.showThemeSwitch)
   const showScreenfull = ref<boolean>(layoutSettings.showScreenfull)
   const showGreyMode = ref<boolean>(layoutSettings.showGreyMode)
   const showColorWeakness = ref<boolean>(layoutSettings.showColorWeakness)
@@ -19,7 +18,6 @@ export const useSettingsStore = defineStore("settings", () => {
     showTagsView,
     showSidebarLogo,
     showNotify,
-    showThemeSwitch,
     showScreenfull,
     showGreyMode,
     showColorWeakness

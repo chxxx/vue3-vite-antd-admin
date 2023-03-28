@@ -1,17 +1,12 @@
 <script lang="ts" setup>
-import { useTheme } from "@/hooks/useTheme"
-// import zhCn from "element-plus/lib/locale/lang/zh-cn"
+import zh_CN from "ant-design-vue/lib/locale-provider/zh_CN"
 
-const { initTheme } = useTheme()
-
-/** 初始化主题 */
-initTheme()
-/** 将 Element Plus 的语言设置为中文 */
-// const locale = zhCn
+/** 将 ant design 的语言设置为中文 */
+const locale = zh_CN
 </script>
 
 <template>
-  <!-- <ElConfigProvider :locale="locale"> -->
-  <router-view />
-  <!-- </ElConfigProvider> -->
+  <a-config-provider :locale="locale">
+    <router-view />
+  </a-config-provider>
 </template>

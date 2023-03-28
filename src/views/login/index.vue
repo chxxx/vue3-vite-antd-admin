@@ -135,12 +135,7 @@ createCode()
   align-items: center;
   width: 100%;
   min-height: 100%;
-  .theme-switch {
-    position: fixed;
-    top: 5%;
-    right: 5%;
-    cursor: pointer;
-  }
+
   .login-card {
     width: 480px;
     border-radius: 20px;

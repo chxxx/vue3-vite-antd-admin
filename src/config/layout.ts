@@ -10,8 +10,6 @@ interface ILayoutSettings {
   fixedHeader: boolean
   /** 是否显示消息通知 */
   showNotify: boolean
-  /** 是否显示切换主题按钮 */
-  showThemeSwitch: boolean
   /** 是否显示全屏按钮 */
   showScreenfull: boolean
   /** 是否显示灰色模式 */
@@ -26,7 +24,6 @@ const layoutSettings: ILayoutSettings = {
   fixedHeader: true,
   showSidebarLogo: true,
   showNotify: true,
-  showThemeSwitch: true,
   showScreenfull: true,
   showGreyMode: false,
   showColorWeakness: false
