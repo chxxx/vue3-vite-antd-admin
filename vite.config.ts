@@ -7,6 +7,7 @@ import vueJsx from "@vitejs/plugin-vue-jsx"
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
 import svgLoader from "vite-svg-loader"
 import DefineOptions from "unplugin-vue-define-options/vite"
+import { viteMockServe } from "vite-plugin-mock"
 
 /** 配置项文档：https://cn.vitejs.dev/config */
 export default (configEnv: ConfigEnv): UserConfigExport => {
@@ -77,7 +78,7 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
         symbolId: "icon-[dir]-[name]"
       }),
       /** DefineOptions 可以更简单的注册组件名称 */
-      DefineOptions()
+      DefineOptions(),
       /** 自动按需引入 (已更改为完整引入，所以注释了) */
       // AutoImport({
       //   dts: "./types/auto-imports.d.ts",
@@ -95,6 +96,19 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
       //   /** 自动按需导入 Element Plus 组件 */
       //   resolvers: [ElementPlusResolver()]
       // })
+      viteMockServe({
+        ignore: /^_/, // 正则匹配忽略的文件
+        mockPath: "mock", // 设置mock.ts 文件的存储文件夹
+        localEnabled: true, // 设置是否启用本地 xxx.ts 文件，不要在生产环境中打开它.设置为 false 将禁用 mock 功能
+        prodEnabled: true, // 设置生产环境是否启用 mock 功能
+        watchFiles: true, // 设置是否监视mockPath对应的文件夹内文件中的更改
+        logger: true,
+        // 代码注入
+        injectCode: `
+          import { setupProdMockServer } from '../mock/_createProductionServer';
+          setupProdMockServer();
+        `
+      })
     ],
     /** Vitest 单元测试配置：https://cn.vitest.dev/config */
     test: {

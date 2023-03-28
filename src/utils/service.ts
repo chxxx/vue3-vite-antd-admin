@@ -4,6 +4,18 @@ import { message } from "ant-design-vue"
 import { get } from "lodash-es"
 import { getToken } from "./cache/cookies"
 
+export interface RequestOptions {
+  /** 当前接口权限, 不需要鉴权的接口请忽略， 格式：sys:user:add */
+  permCode?: string
+  /** 是否直接获取data，而忽略message等 */
+  isGetDataDirectly?: boolean
+  /** 请求成功是提示信息 */
+  successMsg?: string
+  /** 请求失败是提示信息 */
+  errorMsg?: string
+  /** 是否mock数据请求 */
+  isMock?: boolean
+}
 /** 创建请求实例 */
 function createService() {
   // 创建一个 Axios 实例
@@ -88,7 +100,14 @@ function createService() {
 
 /** 创建请求方法 */
 function createRequestFunction(service: AxiosInstance) {
-  return function <T>(config: AxiosRequestConfig): Promise<T> {
+  return function <T>(config: AxiosRequestConfig, options: RequestOptions = {}): Promise<T> {
+    /** 真实请求的路径前缀 */
+    const baseApiUrl = import.meta.env.VITE_BASE_API
+    /** mock请求路径前缀 */
+    const baseMockUrl = import.meta.env.VITE_MOCK_API
+    const env = import.meta.env.NODE_ENV
+    const { isMock } = options
+
     const configDefault = {
       headers: {
         // 携带 Token
@@ -96,7 +115,7 @@ function createRequestFunction(service: AxiosInstance) {
         "Content-Type": get(config, "headers.Content-Type", "application/json")
       },
       timeout: 5000,
-      baseURL: import.meta.env.VITE_BASE_API,
+      baseURL: env === "production" ? baseApiUrl : isMock ? baseMockUrl : baseApiUrl,
       data: {}
     }
     return service(Object.assign(configDefault, config))

@@ -4,7 +4,7 @@ import { useRouter } from "vue-router"
 import { useUserStore } from "@/store/modules/user"
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue"
 import { type FormInstance } from "ant-design-vue"
-import { getLoginCodeApi } from "@/api/login"
+// import { getLoginCodeApi } from "@/api/login"
 import { type ILoginRequestData } from "@/api/login/types/login"
 
 const router = useRouter()
@@ -13,7 +13,7 @@ const loginFormRef = ref<FormInstance | null>(null)
 /** 登录按钮 Loading */
 const loading = ref(false)
 /** 验证码图片 URL */
-const codeUrl = ref("")
+// const codeUrl = ref("")
 /** 登录表单数据 */
 const loginForm: ILoginRequestData = reactive({
   username: "admin",
@@ -44,7 +44,7 @@ const handleLogin = () => {
       router.push({ path: "/" })
     })
     .catch(() => {
-      createCode()
+      // createCode()
       loginForm.password = ""
     })
     .finally(() => {
@@ -56,18 +56,18 @@ const handleLogin = () => {
   // })
 }
 /** 创建验证码 */
-const createCode = () => {
-  // 先清空验证码的输入
-  loginForm.code = ""
-  // 获取验证码
-  codeUrl.value = ""
-  getLoginCodeApi().then((res) => {
-    codeUrl.value = res.data
-  })
-}
+// const createCode = () => {
+//   // 先清空验证码的输入
+//   loginForm.code = ""
+//   // 获取验证码
+//   codeUrl.value = ""
+//   getLoginCodeApi().then((res) => {
+//     codeUrl.value = res.data
+//   })
+// }
 
 /** 初始化验证码 */
-createCode()
+// createCode()
 </script>
 
 <template>
