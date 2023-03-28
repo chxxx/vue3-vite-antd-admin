@@ -10,7 +10,7 @@ import { loadPlugins } from "@/plugins"
 import { loadDirectives } from "@/directives"
 // css
 import "normalize.css"
-import "@/styles/index.scss"
+import "@/styles/index.less"
 import "ant-design-vue/dist/antd.css"
 
 const app = createApp(App)

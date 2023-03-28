@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .error-page {
   height: 100%;
   display: flex;

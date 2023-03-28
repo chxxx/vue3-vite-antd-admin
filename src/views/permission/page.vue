@@ -15,7 +15,7 @@ const handleRolesChange = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .a-tag {
   margin-bottom: 15px;
 }

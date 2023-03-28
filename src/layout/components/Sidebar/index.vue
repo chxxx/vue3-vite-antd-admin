@@ -55,8 +55,8 @@ const isCollapse = computed(() => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-@mixin tip-line {
+<style lang="less" scoped>
+.tip-line() {
   &::before {
     content: "";
     position: absolute;
@@ -93,7 +93,7 @@ const isCollapse = computed(() => {
 
 :deep(.a-menu-item) {
   &.is-active {
-    @include tip-line;
+    .tip-line();
   }
 }
 
@@ -102,7 +102,7 @@ const isCollapse = computed(() => {
     &.is-active {
       .a-sub-menu__title {
         color: var(--v3-sidebar-menu-active-text-color) !important;
-        @include tip-line;
+        .tip-line();
       }
     }
   }

@@ -20,7 +20,7 @@ const props = defineProps({
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .sidebar-logo-container {
   position: relative;
   width: 100%;

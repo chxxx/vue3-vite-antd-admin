@@ -27,7 +27,7 @@ watch(switchRoles, async (value) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .switch-roles {
   margin-top: 15px;
   display: flex;

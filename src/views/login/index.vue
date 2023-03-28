@@ -78,7 +78,7 @@ createCode()
       </div>
       <div class="content">
         <a-form ref="loginFormRef" :model="loginForm" @keyup.enter="handleLogin">
-          <a-form-item prop="username">
+          <a-form-item name="username">
             <a-input
               v-model.trim="loginForm.username"
               placeholder="用户名"
@@ -88,7 +88,7 @@ createCode()
               size="large"
             />
           </a-form-item>
-          <a-form-item prop="password">
+          <a-form-item name="password">
             <a-input
               v-model.trim="loginForm.password"
               placeholder="密码"
@@ -99,7 +99,7 @@ createCode()
               show-password
             />
           </a-form-item>
-          <!-- <a-form-item prop="code">
+          <!-- <a-form-item name="code">
             <a-input
               v-model.trim="loginForm.code"
               placeholder="验证码"
@@ -128,7 +128,7 @@ createCode()
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .login-container {
   display: flex;
   justify-content: center;

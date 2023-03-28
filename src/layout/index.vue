@@ -56,11 +56,11 @@ const handleClickOutside = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
-@import "@/styles/mixins.scss";
+<style lang="less" scoped>
+@import "@/styles/mixins.less";
 
 .app-wrapper {
-  @include clearfix;
+  .clearfix();
   position: relative;
   width: 100%;
 }

@@ -65,7 +65,7 @@ const handleRolesChange = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .permission-alert {
   width: 320px;
   margin-top: 15px;

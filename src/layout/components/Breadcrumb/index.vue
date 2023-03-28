@@ -55,7 +55,7 @@ getBreadcrumb()
   </a-breadcrumb>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .a-breadcrumb__inner,
 .a-breadcrumb__inner a {
   font-weight: 400 !important;

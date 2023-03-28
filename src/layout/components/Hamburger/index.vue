@@ -24,7 +24,7 @@ const toggleClick = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .icon {
   vertical-align: middle;
 }

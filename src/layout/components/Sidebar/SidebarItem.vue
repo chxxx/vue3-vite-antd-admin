@@ -98,7 +98,7 @@ const resolvePath = (routePath: string) => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .svg-icon {
   min-width: 1em;
   margin-right: 12px;

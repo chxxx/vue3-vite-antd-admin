@@ -47,7 +47,7 @@ const logout = () => {
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .navigation-bar {
   height: var(--v3-navigationbar-height);
   overflow: hidden;
