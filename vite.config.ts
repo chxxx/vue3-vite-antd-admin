@@ -6,7 +6,6 @@ import vue from "@vitejs/plugin-vue"
 import vueJsx from "@vitejs/plugin-vue-jsx"
 import { createSvgIconsPlugin } from "vite-plugin-svg-icons"
 import svgLoader from "vite-svg-loader"
-import UnoCSS from "unocss/vite"
 import DefineOptions from "unplugin-vue-define-options/vite"
 
 /** 配置项文档：https://cn.vitejs.dev/config */
@@ -77,8 +76,6 @@ export default (configEnv: ConfigEnv): UserConfigExport => {
         iconDirs: [path.resolve(process.cwd(), "src/icons/svg")],
         symbolId: "icon-[dir]-[name]"
       }),
-      /** UnoCSS */
-      UnoCSS(),
       /** DefineOptions 可以更简单的注册组件名称 */
       DefineOptions()
       /** 自动按需引入 (已更改为完整引入，所以注释了) */

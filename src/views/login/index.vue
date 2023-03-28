@@ -3,7 +3,6 @@ import { reactive, ref } from "vue"
 import { useRouter } from "vue-router"
 import { useUserStore } from "@/store/modules/user"
 import { UserOutlined, LockOutlined } from "@ant-design/icons-vue"
-import ThemeSwitch from "@/components/ThemeSwitch/index.vue"
 import { type FormInstance } from "ant-design-vue"
 import { getLoginCodeApi } from "@/api/login"
 import { type ILoginRequestData } from "@/api/login/types/login"
@@ -73,15 +72,14 @@ createCode()
 
 <template>
   <div class="login-container">
-    <ThemeSwitch class="theme-switch" />
     <div class="login-card">
       <div class="title">
-        <img src="@/assets/layout/logo-text-2.png" />
+        <!-- <img src="@/assets/layout/logo-text-2.png" /> -->
       </div>
       <div class="content">
-        <el-form ref="loginFormRef" :model="loginForm" @keyup.enter="handleLogin">
-          <el-form-item prop="username">
-            <el-input
+        <a-form ref="loginFormRef" :model="loginForm" @keyup.enter="handleLogin">
+          <a-form-item prop="username">
+            <a-input
               v-model.trim="loginForm.username"
               placeholder="用户名"
               type="text"
@@ -89,9 +87,9 @@ createCode()
               :prefix-icon="UserOutlined"
               size="large"
             />
-          </el-form-item>
-          <el-form-item prop="password">
-            <el-input
+          </a-form-item>
+          <a-form-item prop="password">
+            <a-input
               v-model.trim="loginForm.password"
               placeholder="密码"
               type="password"
@@ -100,9 +98,9 @@ createCode()
               size="large"
               show-password
             />
-          </el-form-item>
-          <!-- <el-form-item prop="code">
-            <el-input
+          </a-form-item>
+          <!-- <a-form-item prop="code">
+            <a-input
               v-model.trim="loginForm.code"
               placeholder="验证码"
               type="text"
@@ -112,19 +110,19 @@ createCode()
               size="large"
             >
               <template #append>
-                <el-image :src="codeUrl" @click="createCode" draggable="false">
+                <a-image :src="codeUrl" @click="createCode" draggable="false">
                   <template #placeholder>
-                    <el-icon><Picture /></el-icon>
+                    <a-icon><Picture /></a-icon>
                   </template>
                   <template #error>
-                    <el-icon><Loading /></el-icon>
+                    <a-icon><Loading /></a-icon>
                   </template>
-                </el-image>
+                </a-image>
               </template>
-            </el-input>
-          </el-form-item> -->
-          <el-button :loading="loading" type="primary" size="large" @click.prevent="handleLogin"> 登 录 </el-button>
-        </el-form>
+            </a-input>
+          </a-form-item> -->
+          <a-button :loading="loading" type="primary" size="large" @click.prevent="handleLogin"> 登 录 </a-button>
+        </a-form>
       </div>
     </div>
   </div>
@@ -160,10 +158,10 @@ createCode()
     }
     .content {
       padding: 20px 50px 50px 50px;
-      :deep(.el-input-group__append) {
+      :deep(.a-input-group__append) {
         padding: 0;
         overflow: hidden;
-        .el-image {
+        .a-image {
           width: 100px;
           height: 40px;
           border-left: 0px;
@@ -172,7 +170,7 @@ createCode()
           text-align: center;
         }
       }
-      .el-button {
+      .a-button {
         width: 100%;
         margin-top: 10px;
       }

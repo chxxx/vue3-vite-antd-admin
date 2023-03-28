@@ -9,12 +9,8 @@ import { loadSvg } from "@/icons"
 import { loadPlugins } from "@/plugins"
 import { loadDirectives } from "@/directives"
 // css
-import "uno.css"
 import "normalize.css"
-import "vxe-table/lib/style.css"
-import "vxe-table-plugin-element/dist/style.css"
 import "@/styles/index.scss"
-import Antd from "ant-design-vue"
 import "ant-design-vue/dist/antd.css"
 
 const app = createApp(App)
@@ -26,4 +22,4 @@ loadSvg(app)
 /** 加载自定义指令 */
 loadDirectives(app)
 
-app.use(store).use(router).use(Antd).mount("#app")
+app.use(store).use(router).mount("#app")

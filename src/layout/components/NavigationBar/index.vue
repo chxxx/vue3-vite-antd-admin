@@ -2,29 +2,16 @@
 import { computed } from "vue"
 import { useRouter } from "vue-router"
 import { useAppStore } from "@/store/modules/app"
-import { useSettingsStore } from "@/store/modules/settings"
 import { useUserStore } from "@/store/modules/user"
-import { UsbFilled } from "@ant-design/icons-vue"
 import Breadcrumb from "../Breadcrumb/index.vue"
 import Hamburger from "../Hamburger/index.vue"
-import Screenfull from "@/components/Screenfull/index.vue"
 
 const router = useRouter()
 const appStore = useAppStore()
-const settingsStore = useSettingsStore()
 const userStore = useUserStore()
 
 const sidebar = computed(() => {
   return appStore.sidebar
-})
-// const showNotify = computed(() => {
-//   return settingsStore.showNotify
-// })
-// const showThemeSwitch = computed(() => {
-//   return settingsStore.showThemeSwitch
-// })
-const showScreenfull = computed(() => {
-  return settingsStore.showScreenfull
 })
 
 const toggleSidebar = () => {
@@ -41,24 +28,14 @@ const logout = () => {
     <Hamburger :is-active="sidebar.opened" class="hamburger" @toggle-click="toggleSidebar" />
     <Breadcrumb class="breadcrumb" />
     <div class="right-menu">
-      <Screenfull v-if="showScreenfull" class="right-menu-item" />
-      <!-- <ThemeSwitch v-if="showThemeSwitch" class="right-menu-item" />
-      <Notify v-if="showNotify" class="right-menu-item" /> -->
       <a-dropdown class="right-menu-item">
         <div class="right-menu-avatar">
-          <a-avatar :icon="UsbFilled" :size="30" />
           <span>{{ userStore.username }}</span>
         </div>
-        <template #dropdown>
+        <template #overlay>
           <a-menu>
-            <a target="_blank" href="https://juejin.cn/post/7089377403717287972">
+            <a target="_blank" href="">
               <a-menu-item>中文文档</a-menu-item>
-            </a>
-            <a target="_blank" href="https://github.com/un-pany/v3-admin-vite">
-              <a-menu-item>GitHub</a-menu-item>
-            </a>
-            <a target="_blank" href="https://gitee.com/un-pany/v3-admin-vite">
-              <a-menu-item>Gitee</a-menu-item>
             </a>
             <a-menu-item divided @click="logout">
               <span style="display: block">退出登录</span>
@@ -85,6 +62,9 @@ const logout = () => {
   }
   .breadcrumb {
     float: left;
+    display: flex;
+    align-items: center;
+    height: 100%;
     // 参考 Bootstrap 的响应式设计 WIDTH = 576
     @media screen and (max-width: 576px) {
       display: none;

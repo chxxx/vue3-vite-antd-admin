@@ -19,10 +19,8 @@ const toggleClick = () => {
 
 <template>
   <div @click="toggleClick">
-    <el-icon :size="20" class="icon">
-      <menu-fold-outlined v-if="props.isActive" />
-      <menu-unfold-outlined v-else />
-    </el-icon>
+    <menu-fold-outlined v-if="props.isActive" />
+    <menu-unfold-outlined v-else />
   </div>
 </template>
 

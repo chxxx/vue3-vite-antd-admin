@@ -1,5 +1,5 @@
 <template>
   <div class="app-container">
-    <el-card> menu 2 </el-card>
+    <a-card> menu 2 </a-card>
   </div>
 </template>

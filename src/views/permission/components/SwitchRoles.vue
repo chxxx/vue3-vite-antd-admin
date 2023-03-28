@@ -19,10 +19,10 @@ watch(switchRoles, async (value) => {
     <div>你的权限：{{ userStore.roles }}</div>
     <div class="switch-roles">
       <span>切换权限：</span>
-      <el-radio-group v-model="switchRoles">
-        <el-radio-button label="editor" />
-        <el-radio-button label="admin" />
-      </el-radio-group>
+      <a-radio-group v-model:value="switchRoles">
+        <a-radio-button value="editor">editor</a-radio-button>
+        <a-radio-button value="admin">admin</a-radio-button>
+      </a-radio-group>
     </div>
   </div>
 </template>

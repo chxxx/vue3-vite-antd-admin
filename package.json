@@ -1,15 +1,13 @@
 {
-  "name": "v3-admin-vite",
+  "name": "vue3-vite-antd-admin",
   "version": "3.3.4",
-  "description": "一个免费开源的中后台管理系统基础解决方案，基于 Vue3、TypeScript、Element Plus、Pinia 和 Vite 等主流技术.",
+  "description": "",
   "author": {
-    "name": "pany",
-    "email": "939630029@qq.com",
-    "url": "https://github.com/pany-ang"
+    "name": ""
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/un-pany/v3-admin-vite.git"
+    "url": ""
   },
   "scripts": {
     "dev": "vite",
@@ -36,12 +34,8 @@
     "path-to-regexp": "^6.2.1",
     "pinia": "^2.0.32",
     "resize-observer-polyfill": "^1.5.1",
-    "screenfull": "^6.0.2",
     "vue": "^3.2.47",
-    "vue-router": "^4.1.6",
-    "vxe-table": "^4.3.10",
-    "vxe-table-plugin-element": "^3.0.6",
-    "xe-utils": "^3.5.7"
+    "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@types/js-cookie": "^3.0.3",
@@ -66,7 +60,6 @@
     "sass": "^1.59.3",
     "terser": "^5.16.6",
     "typescript": "^4.9.5",
-    "unocss": "^0.50.4",
     "unplugin-vue-define-options": "^1.2.4",
     "vite": "^4.1.4",
     "vite-plugin-svg-icons": "^2.0.1",
@@ -98,10 +91,10 @@
     "vue3-admin",
     "vite",
     "vite-admin",
-    "element-plus",
-    "element-plus-admin",
+    "ant-design",
+    "ant-design-admin",
     "ts",
     "typescript"
   ],
-  "license": "MIT"
+  "license": ""
 }

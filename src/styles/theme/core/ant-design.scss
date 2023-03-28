@@ -1,11 +1,11 @@
-/** Element Plus 相关 */
+/** ant design 相关 */
 
 // 侧边栏的 item 的 popper
-.el-popper {
+.a-popper {
   border: none !important;
-  .el-menu {
+  .a-menu {
     background-color: lighten($theme-bg-color, 4%) !important;
-    .el-menu-item {
+    .a-menu-item {
       background-color: lighten($theme-bg-color, 4%) !important;
       &.is-active,
       &:hover {
@@ -13,7 +13,7 @@
         color: $active-font-color !important;
       }
     }
-    .el-sub-menu__title {
+    .a-sub-menu__title {
       background-color: lighten($theme-bg-color, 4%) !important;
     }
   }
