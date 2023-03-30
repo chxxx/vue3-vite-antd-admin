@@ -23,8 +23,8 @@
         </a-row>
         <a-row>
           <a-col :span="24" style="text-align: right">
-            <a-button type="primary" html-type="submit" @click="handleSearch">Search</a-button>
-            <a-button style="margin: 0 8px" @click="resetSearch">Clear</a-button>
+            <a-button type="primary" html-type="submit">Search</a-button>
+            <a-button style="margin: 0 8px" @click="() => formRef?.resetFields()">Clear</a-button>
             <a style="font-size: 12px" @click="expand = !expand">
               <template v-if="expand">
                 <UpOutlined />
@@ -43,7 +43,7 @@
         <template #icon><plus-outlined /></template>
         新增
       </a-button>
-      <a-table :columns="columns" :data-source="data" :pagination="false" :loading="loading">
+      <a-table :columns="columns" :data-source="data">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
             <span>
@@ -84,25 +84,13 @@
           </template>
         </template>
       </a-table>
-      <a-pagination
-        :pageSizeOptions="paginationData.pageSizes"
-        :total="paginationData.total"
-        :pageSize="paginationData.pageSize"
-        :current="paginationData.currentPage"
-        @showSizeChange="handleSizeChange"
-        @change="handleCurrentChange"
-        show-quick-jumper
-      />
     </a-card>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, watch } from "vue"
-import { getTableDataApi } from "@/api/table"
+import { ref, reactive } from "vue"
 import { SmileOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons-vue"
 import type { FormInstance } from "ant-design-vue"
-import { usePagination } from "@/hooks/usePagination"
-import { type IGetTableData } from "@/api/table/types/table"
 const columns = [
   {
     name: "Name",
@@ -129,53 +117,34 @@ const columns = [
     key: "action"
   }
 ]
-const loading = ref<boolean>(false)
-const { paginationData, handleCurrentChange, handleSizeChange } = usePagination({ pageSize: 20 })
 
-//#region 查
-const data = ref<IGetTableData[]>([])
-const formRef = ref<FormInstance>()
-const formState = reactive({
-  name: "",
-  age: null
-})
-const getTableData = () => {
-  loading.value = true
-  getTableDataApi({
-    currentPage: paginationData.currentPage,
-    size: paginationData.pageSize,
-    name: formState.name || undefined,
-    age: formState.age || undefined
-  })
-    .then((res) => {
-      paginationData.total = res.data.total
-      data.value = res.data.list
-    })
-    .catch(() => {
-      data.value = []
-    })
-    .finally(() => {
-      loading.value = false
-    })
-}
-const handleSearch = () => {
-  if (paginationData.currentPage === 1) {
-    getTableData()
+const data = [
+  {
+    key: "1",
+    name: "John Brown",
+    age: 32,
+    address: "New York No. 1 Lake Park",
+    tags: ["nice", "developer"]
+  },
+  {
+    key: "2",
+    name: "Jim Green",
+    age: 42,
+    address: "London No. 1 Lake Park",
+    tags: ["loser"]
+  },
+  {
+    key: "3",
+    name: "Joe Black",
+    age: 32,
+    address: "Sidney No. 1 Lake Park",
+    tags: ["cool", "teacher"]
   }
-  paginationData.currentPage = 1
-}
-const resetSearch = () => {
-  formRef.value?.resetFields()
-  if (paginationData.currentPage === 1) {
-    getTableData()
-  }
-  paginationData.currentPage = 1
-}
-//#endregion
+]
 
-/** 监听分页参数的变化 */
-watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
 const expand = ref(false)
+const formRef = ref<FormInstance>()
+const formState = reactive({})
 const onFinish = (values: any) => {
   console.log("Received values of form: ", values)
   console.log("formState: ", formState)

@@ -29,9 +29,14 @@ export function updateTableDataApi(data: Table.IUpdateTableRequestData) {
 
 /** 查 */
 export function getTableDataApi(params: Table.IGetTableRequestData) {
-  return request<Table.GetTableResponseData>({
-    url: "table",
-    method: "get",
-    params
-  })
+  return request<Table.GetTableResponseData>(
+    {
+      url: "table",
+      method: "get",
+      params
+    },
+    {
+      isMock: true
+    }
+  )
 }

@@ -5,7 +5,7 @@ interface IDefaultPaginationData {
   currentPage: number
   pageSizes: number[]
   pageSize: number
-  layout: string
+  // layout: string
 }
 
 interface IPaginationData {
@@ -13,7 +13,7 @@ interface IPaginationData {
   currentPage?: number
   pageSizes?: number[]
   pageSize?: number
-  layout?: string
+  // layout?: string
 }
 
 /** 默认的分页参数 */
@@ -21,8 +21,8 @@ const defaultPaginationData: IDefaultPaginationData = {
   total: 0,
   currentPage: 1,
   pageSizes: [10, 20, 50],
-  pageSize: 10,
-  layout: "total, sizes, prev, pager, next, jumper"
+  pageSize: 10
+  // layout: "total, sizes, prev, pager, next, jumper"
 }
 
 export function usePagination(_paginationData: IPaginationData = {}) {
@@ -30,13 +30,13 @@ export function usePagination(_paginationData: IPaginationData = {}) {
   const paginationData = reactive(Object.assign({ ...defaultPaginationData }, _paginationData))
 
   /** 改变当前页码 */
-  const handleCurrentChange = (value: number) => {
-    paginationData.currentPage = value
+  const handleCurrentChange = (page: number) => {
+    paginationData.currentPage = page
   }
 
   /** 改变页面大小 */
-  const handleSizeChange = (value: number) => {
-    paginationData.pageSize = value
+  const handleSizeChange = (current: number, size: number) => {
+    paginationData.pageSize = size
   }
 
   return { paginationData, handleCurrentChange, handleSizeChange }
