@@ -30,16 +30,20 @@
           <a-button key="submit" type="primary" :loading="loadingModal" @click="onSubmit">Submit</a-button>
         </template>
         <a-form :label-col="labelCol" :wrapper-col="wrapperCol" ref="submitFormRef" :model="modelRef">
-          <a-form-item name="name" label="name" required>
+          <a-form-item
+            name="name"
+            label="name"
+            :rules="[{ required: true, message: 'Please input Name', trigger: 'blur' }]"
+          >
             <a-input v-model:value="modelRef.name" />
           </a-form-item>
-          <a-form-item name="age" label="age" required>
+          <a-form-item name="age" label="age" :rules="[{ validator: checkAge, trigger: 'blur' }]">
             <a-input-number id="inputNumber" v-model:value="modelRef.age" />
           </a-form-item>
-          <a-form-item class="error-infos" :wrapper-col="{ span: 14, offset: 4 }" v-bind="errorInfos">
-            <!-- <a-button type="primary" @click.prevent="onSubmit">Create</a-button>
+          <!-- <a-form-item class="error-infos" :wrapper-col="{ span: 14, offset: 4 }" v-bind="errorInfos"> -->
+          <!-- <a-button type="primary" @click.prevent="onSubmit">Create</a-button>
             <a-button style="margin-left: 10px" @click="resetFields">Reset</a-button> -->
-          </a-form-item>
+          <!-- </a-form-item> -->
         </a-form>
       </a-modal>
       <a-table :columns="columns" :data-source="data" :pagination="false" :loading="loading">
@@ -91,14 +95,12 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, watch, toRaw, computed, nextTick } from "vue"
+import { ref, reactive, watch, toRaw } from "vue"
 import { getTableDataApi, createTableDataApi, updateTableDataApi, deleteTableDataApi } from "@/api/table"
 import { SmileOutlined, PlusOutlined } from "@ant-design/icons-vue"
 import { FormInstance, message, Modal } from "ant-design-vue"
-import { Form } from "ant-design-vue"
 import { usePagination } from "@/hooks/usePagination"
 import { type IGetTableData } from "@/api/table/types/table"
-import { toArray } from "lodash-es"
 import { Rule } from "ant-design-vue/lib/form"
 const columns = [
   {
@@ -128,7 +130,6 @@ const columns = [
 ]
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination({ pageSize: 20 })
-const useForm = Form.useForm
 //#region 增
 const labelCol = { span: 6 }
 const wrapperCol = { span: 14 }
@@ -150,18 +151,9 @@ const checkAge = async (_rule: Rule, value: number) => {
     }
   }
 }
-const rulesRef = reactive({
-  name: [
-    {
-      required: true,
-      message: "Please input Name"
-    }
-  ],
-  age: [{ validator: checkAge, trigger: "change" }]
-})
-const { validate, validateInfos, mergeValidateInfo } = useForm(modelRef, rulesRef)
 const onSubmit = () => {
-  validate()
+  submitFormRef.value
+    ?.validateFields()
     .then(() => {
       console.log(toRaw(modelRef))
       if (currentUpdateId.value === undefined) {
@@ -185,16 +177,12 @@ const onSubmit = () => {
       loadingModal.value = false
     })
 }
-const errorInfos = computed(() => {
-  return mergeValidateInfo(toArray(validateInfos))
-})
 const loadingModal = ref<boolean>(false)
 const visible = ref<boolean>(false)
 const submitFormRef = ref<FormInstance>()
 
 const showModal = () => {
   visible.value = true
-  submitFormRef.value?.clearValidate()
 }
 
 const handleCancel = () => {
@@ -204,7 +192,7 @@ const resetForm = () => {
   currentUpdateId.value = undefined
   modelRef.name = ""
   modelRef.age = 0
-  nextTick(() => {})
+  submitFormRef.value?.clearValidate()
 }
 //#endregion
 
