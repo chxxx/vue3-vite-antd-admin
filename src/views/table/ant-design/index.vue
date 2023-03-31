@@ -1,22 +1,12 @@
 <template>
   <div class="app-container">
     <a-card>
-      <a-form
-        ref="formRef"
-        name="advanced_search"
-        class="ant-advanced-search-form"
-        :model="formState"
-        @finish="onFinish"
-      >
+      <a-form ref="formRef" name="advanced_search" class="ant-advanced-search-form" :model="formState">
         <a-row :gutter="24">
-          <template v-for="i in 10" :key="i">
-            <a-col v-show="expand || i <= 6" :span="8">
-              <a-form-item
-                :name="`field-${i}`"
-                :label="`field-${i}`"
-                :rules="[{ required: false, message: 'input something' }]"
-              >
-                <a-input v-model:value="formState[`field-${i}` as keyof typeof formState]" placeholder="placeholder" />
+          <template v-for="(e, i) in formState" :key="i">
+            <a-col :span="8">
+              <a-form-item :name="i" :label="i">
+                <a-input v-model:value="formState[i as keyof typeof formState]" placeholder="placeholder" />
               </a-form-item>
             </a-col>
           </template>
@@ -25,15 +15,6 @@
           <a-col :span="24" style="text-align: right">
             <a-button type="primary" html-type="submit" @click="handleSearch">Search</a-button>
             <a-button style="margin: 0 8px" @click="resetSearch">Clear</a-button>
-            <a style="font-size: 12px" @click="expand = !expand">
-              <template v-if="expand">
-                <UpOutlined />
-              </template>
-              <template v-else>
-                <DownOutlined />
-              </template>
-              Collapse
-            </a>
           </a-col>
         </a-row>
       </a-form>
@@ -43,26 +24,17 @@
         <template #icon><plus-outlined /></template>
         新增
       </a-button>
-      <a-modal v-model:visible="visible" title="Title">
+      <a-modal v-model:visible="visible" title="Title" :afterClose="resetForm">
         <template #footer>
           <a-button key="back" @click="handleCancel">Return</a-button>
           <a-button key="submit" type="primary" :loading="loadingModal" @click="onSubmit">Submit</a-button>
         </template>
-        <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
-          <a-form-item label="Name" required>
+        <a-form :label-col="labelCol" :wrapper-col="wrapperCol" ref="submitFormRef" :model="modelRef">
+          <a-form-item name="name" label="name" required>
             <a-input v-model:value="modelRef.name" />
           </a-form-item>
-          <a-form-item label="Age" required>
-            <a-select v-model:value="modelRef.region" placeholder="please select your zone">
-              <a-select-option value="shanghai">Zone one</a-select-option>
-              <a-select-option value="beijing">Zone two</a-select-option>
-            </a-select>
-          </a-form-item>
-          <a-form-item label="Tags" required>
-            <a-checkbox-group v-model:value="modelRef.type">
-              <a-checkbox value="1" name="type">DEVELOPER</a-checkbox>
-              <a-checkbox value="2" name="type">NICE</a-checkbox>
-            </a-checkbox-group>
+          <a-form-item name="age" label="age" required>
+            <a-input-number id="inputNumber" v-model:value="modelRef.age" />
           </a-form-item>
           <a-form-item class="error-infos" :wrapper-col="{ span: 14, offset: 4 }" v-bind="errorInfos">
             <!-- <a-button type="primary" @click.prevent="onSubmit">Create</a-button>
@@ -99,9 +71,9 @@
           </template>
           <template v-else-if="column.key === 'action'">
             <span>
-              <a @click="showModal">编辑</a>
+              <a @click="handleUpdate(record)">编辑</a>
               <a-divider type="vertical" />
-              <a>删除</a>
+              <a @click="handleDelete(record)">删除</a>
             </span>
           </template>
         </template>
@@ -119,14 +91,15 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, watch, toRaw, computed } from "vue"
-import { getTableDataApi } from "@/api/table"
-import { SmileOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons-vue"
-import type { FormInstance } from "ant-design-vue"
+import { ref, reactive, watch, toRaw, computed, nextTick } from "vue"
+import { getTableDataApi, createTableDataApi, updateTableDataApi, deleteTableDataApi } from "@/api/table"
+import { SmileOutlined, PlusOutlined } from "@ant-design/icons-vue"
+import { FormInstance, message, Modal } from "ant-design-vue"
 import { Form } from "ant-design-vue"
 import { usePagination } from "@/hooks/usePagination"
 import { type IGetTableData } from "@/api/table/types/table"
 import { toArray } from "lodash-es"
+import { Rule } from "ant-design-vue/lib/form"
 const columns = [
   {
     name: "Name",
@@ -161,39 +134,49 @@ const labelCol = { span: 6 }
 const wrapperCol = { span: 14 }
 const modelRef = reactive({
   name: "",
-  region: undefined,
-  type: []
+  age: 0
 })
+const checkAge = async (_rule: Rule, value: number) => {
+  if (!value) {
+    return Promise.reject("Please input the age")
+  }
+  if (!Number.isInteger(value)) {
+    return Promise.reject("Please input digits")
+  } else {
+    if (value < 18) {
+      return Promise.reject("Age must be greater than 18")
+    } else {
+      return Promise.resolve()
+    }
+  }
+}
 const rulesRef = reactive({
   name: [
     {
       required: true,
-      message: "Please input name"
+      message: "Please input Name"
     }
   ],
-  region: [
-    {
-      required: true,
-      message: "Please select region"
-    }
-  ],
-  type: [
-    {
-      required: true,
-      message: "Please select type",
-      type: "array"
-    }
-  ]
+  age: [{ validator: checkAge, trigger: "change" }]
 })
 const { validate, validateInfos, mergeValidateInfo } = useForm(modelRef, rulesRef)
 const onSubmit = () => {
   validate()
     .then(() => {
       console.log(toRaw(modelRef))
-      setTimeout(() => {
-        loadingModal.value = false
-        visible.value = false
-      }, 2000)
+      if (currentUpdateId.value === undefined) {
+        createTableDataApi(modelRef).then(() => {
+          message.success("新增成功")
+          visible.value = false
+          getTableData()
+        })
+      } else {
+        updateTableDataApi(modelRef).then(() => {
+          message.success("修改成功")
+          visible.value = false
+          getTableData()
+        })
+      }
     })
     .catch((err) => {
       console.log("error", err)
@@ -207,15 +190,51 @@ const errorInfos = computed(() => {
 })
 const loadingModal = ref<boolean>(false)
 const visible = ref<boolean>(false)
+const submitFormRef = ref<FormInstance>()
 
 const showModal = () => {
   visible.value = true
+  submitFormRef.value?.clearValidate()
 }
 
 const handleCancel = () => {
   visible.value = false
 }
+const resetForm = () => {
+  currentUpdateId.value = undefined
+  modelRef.name = ""
+  modelRef.age = 0
+  nextTick(() => {})
+}
 //#endregion
+
+//#region 删
+const handleDelete = (row: IGetTableData) => {
+  Modal.confirm({
+    content: `正在删除用户：${row.name}，确认删除？`,
+    title: "提示",
+    okText: "确定",
+    cancelText: "取消",
+    onOk() {
+      deleteTableDataApi(row.name).then(() => {
+        message.success("删除成功")
+        getTableData()
+      })
+    }
+  })
+}
+//#endregion
+
+//#region 改
+const currentUpdateId = ref<undefined | string>(undefined)
+const handleUpdate = (row: IGetTableData) => {
+  currentUpdateId.value = row.name
+  modelRef.name = row.name
+  modelRef.age = row.age
+  visible.value = true
+}
+//#endregion
+
 //#region 查
 const data = ref<IGetTableData[]>([])
 const formRef = ref<FormInstance>()
@@ -259,9 +278,4 @@ const resetSearch = () => {
 
 /** 监听分页参数的变化 */
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
-const expand = ref(false)
-const onFinish = (values: any) => {
-  console.log("Received values of form: ", values)
-  console.log("formState: ", formState)
-}
 </script>

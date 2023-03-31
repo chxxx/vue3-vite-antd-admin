@@ -1,12 +1,14 @@
 export interface ICreateTableRequestData {
-  username: string
-  password: string
+  name: string
+  age: number
 }
 
 export interface IUpdateTableRequestData {
-  id: string
-  username: string
-  password?: string
+  // id: string
+  // username: string
+  // password?: string
+  name: string
+  age: number
 }
 
 export interface IGetTableRequestData {
