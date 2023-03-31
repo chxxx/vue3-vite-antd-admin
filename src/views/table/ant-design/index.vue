@@ -39,10 +39,37 @@
       </a-form>
     </a-card>
     <a-card>
-      <a-button type="primary">
+      <a-button type="primary" @click="showModal">
         <template #icon><plus-outlined /></template>
         新增
       </a-button>
+      <a-modal v-model:visible="visible" title="Title">
+        <template #footer>
+          <a-button key="back" @click="handleCancel">Return</a-button>
+          <a-button key="submit" type="primary" :loading="loadingModal" @click="onSubmit">Submit</a-button>
+        </template>
+        <a-form :label-col="labelCol" :wrapper-col="wrapperCol">
+          <a-form-item label="Name" required>
+            <a-input v-model:value="modelRef.name" />
+          </a-form-item>
+          <a-form-item label="Age" required>
+            <a-select v-model:value="modelRef.region" placeholder="please select your zone">
+              <a-select-option value="shanghai">Zone one</a-select-option>
+              <a-select-option value="beijing">Zone two</a-select-option>
+            </a-select>
+          </a-form-item>
+          <a-form-item label="Tags" required>
+            <a-checkbox-group v-model:value="modelRef.type">
+              <a-checkbox value="1" name="type">DEVELOPER</a-checkbox>
+              <a-checkbox value="2" name="type">NICE</a-checkbox>
+            </a-checkbox-group>
+          </a-form-item>
+          <a-form-item class="error-infos" :wrapper-col="{ span: 14, offset: 4 }" v-bind="errorInfos">
+            <!-- <a-button type="primary" @click.prevent="onSubmit">Create</a-button>
+            <a-button style="margin-left: 10px" @click="resetFields">Reset</a-button> -->
+          </a-form-item>
+        </a-form>
+      </a-modal>
       <a-table :columns="columns" :data-source="data" :pagination="false" :loading="loading">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
@@ -72,14 +99,9 @@
           </template>
           <template v-else-if="column.key === 'action'">
             <span>
-              <a>Invite 一 {{ record.name }}</a>
+              <a @click="showModal">编辑</a>
               <a-divider type="vertical" />
-              <a>Delete</a>
-              <a-divider type="vertical" />
-              <a class="ant-dropdown-link">
-                More actions
-                <down-outlined />
-              </a>
+              <a>删除</a>
             </span>
           </template>
         </template>
@@ -97,12 +119,14 @@
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, watch } from "vue"
+import { ref, reactive, watch, toRaw, computed } from "vue"
 import { getTableDataApi } from "@/api/table"
 import { SmileOutlined, DownOutlined, PlusOutlined } from "@ant-design/icons-vue"
 import type { FormInstance } from "ant-design-vue"
+import { Form } from "ant-design-vue"
 import { usePagination } from "@/hooks/usePagination"
 import { type IGetTableData } from "@/api/table/types/table"
+import { toArray } from "lodash-es"
 const columns = [
   {
     name: "Name",
@@ -131,7 +155,67 @@ const columns = [
 ]
 const loading = ref<boolean>(false)
 const { paginationData, handleCurrentChange, handleSizeChange } = usePagination({ pageSize: 20 })
+const useForm = Form.useForm
+//#region 增
+const labelCol = { span: 6 }
+const wrapperCol = { span: 14 }
+const modelRef = reactive({
+  name: "",
+  region: undefined,
+  type: []
+})
+const rulesRef = reactive({
+  name: [
+    {
+      required: true,
+      message: "Please input name"
+    }
+  ],
+  region: [
+    {
+      required: true,
+      message: "Please select region"
+    }
+  ],
+  type: [
+    {
+      required: true,
+      message: "Please select type",
+      type: "array"
+    }
+  ]
+})
+const { validate, validateInfos, mergeValidateInfo } = useForm(modelRef, rulesRef)
+const onSubmit = () => {
+  validate()
+    .then(() => {
+      console.log(toRaw(modelRef))
+      setTimeout(() => {
+        loadingModal.value = false
+        visible.value = false
+      }, 2000)
+    })
+    .catch((err) => {
+      console.log("error", err)
+    })
+    .finally(() => {
+      loadingModal.value = false
+    })
+}
+const errorInfos = computed(() => {
+  return mergeValidateInfo(toArray(validateInfos))
+})
+const loadingModal = ref<boolean>(false)
+const visible = ref<boolean>(false)
 
+const showModal = () => {
+  visible.value = true
+}
+
+const handleCancel = () => {
+  visible.value = false
+}
+//#endregion
 //#region 查
 const data = ref<IGetTableData[]>([])
 const formRef = ref<FormInstance>()

@@ -8,7 +8,7 @@ const demoList = (() => {
     result.push({
       key: "@id",
       name: "@cname",
-      age: "@integer(10-100)",
+      age: "@integer(1,100)",
       address: "@city",
       tags: mock('@shuffle(["nice", "developer"])')
     })
