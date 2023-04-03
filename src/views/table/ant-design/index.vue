@@ -5,7 +5,7 @@
         <a-row :gutter="24">
           <template v-for="(e, i) in formState" :key="i">
             <a-col :span="8">
-              <a-form-item :name="i" :label="i">
+              <a-form-item :name="i" :label="columns.find((e) => e.key === i)?.name">
                 <a-input v-model:value="formState[i as keyof typeof formState]" placeholder="placeholder" />
               </a-form-item>
             </a-col>
@@ -13,8 +13,8 @@
         </a-row>
         <a-row>
           <a-col :span="24" style="text-align: right">
-            <a-button type="primary" html-type="submit" @click="handleSearch">Search</a-button>
-            <a-button style="margin: 0 8px" @click="resetSearch">Clear</a-button>
+            <a-button type="primary" html-type="submit" @click="handleSearch">搜索</a-button>
+            <a-button style="margin: 0 8px" @click="resetSearch">清空</a-button>
           </a-col>
         </a-row>
       </a-form>
@@ -49,10 +49,7 @@
       <a-table :columns="columns" :data-source="data" :pagination="false" :loading="loading">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
-            <span>
-              <smile-outlined />
-              Name
-            </span>
+            <span> Name </span>
           </template>
         </template>
 
@@ -97,39 +94,39 @@
 <script lang="ts" setup>
 import { ref, reactive, watch, toRaw } from "vue"
 import { getTableDataApi, createTableDataApi, updateTableDataApi, deleteTableDataApi } from "@/api/table"
-import { SmileOutlined, PlusOutlined } from "@ant-design/icons-vue"
+import { PlusOutlined } from "@ant-design/icons-vue"
 import { FormInstance, message, Modal } from "ant-design-vue"
 import { usePagination } from "@/hooks/usePagination"
 import { type IGetTableData } from "@/api/table/types/table"
 import { Rule } from "ant-design-vue/lib/form"
 const columns = [
   {
-    name: "Name",
+    name: "姓名",
     dataIndex: "name",
     key: "name"
   },
   {
-    title: "Age",
+    title: "年龄",
     dataIndex: "age",
     key: "age"
   },
   {
-    title: "Address",
+    title: "地址",
     dataIndex: "address",
     key: "address"
   },
   {
-    title: "Tags",
+    title: "标签",
     key: "tags",
     dataIndex: "tags"
   },
   {
-    title: "Action",
+    title: "操作",
     key: "action"
   }
 ]
 const loading = ref<boolean>(false)
-const { paginationData, handleCurrentChange, handleSizeChange } = usePagination({ pageSize: 20 })
+const { paginationData, handleCurrentChange, handleSizeChange } = usePagination({ pageSize: 10 })
 //#region 增
 const labelCol = { span: 6 }
 const wrapperCol = { span: 14 }

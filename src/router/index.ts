@@ -71,8 +71,15 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: () => import("@/views/table/ant-design/index.vue"),
         name: "AntDesign",
         meta: {
-          title: "Ant Design",
-          keepAlive: true
+          title: "Ant Design"
+        }
+      },
+      {
+        path: "demo",
+        component: () => import("@/views/table/demo/index.vue"),
+        name: "demo",
+        meta: {
+          title: "demo"
         }
       }
     ]
