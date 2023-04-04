@@ -1,9 +1,11 @@
 <script lang="ts" setup>
-import { getTableDataApi } from "@/api/table"
+import { createTableDataApi, getTableDataApi } from "@/api/table"
 import { IGetTableData } from "@/api/table/types/table"
+import { usePagination } from "@/hooks/usePagination"
 import { SmileOutlined, DownOutlined } from "@ant-design/icons-vue"
-import { FormInstance } from "ant-design-vue"
-import { ref, reactive } from "vue"
+import { FormInstance, message } from "ant-design-vue"
+import { ref, reactive, watch } from "vue"
+import { checkAge } from "@/utils/validate"
 const columns = [
   {
     name: "Name",
@@ -38,36 +40,66 @@ const formState = reactive({
   name: "",
   age: undefined
 })
-const onFinish = (values: any) => {
-  console.log("Received values of form: ", values)
-  console.log("formState: ", formState)
-}
-
 const getTableData = () => {
   getTableDataApi({
     ...formState,
-    currentPage: 1,
-    size: 10
+    currentPage: paginationData.currentPage,
+    size: paginationData.pageSize
   })
     .then((result) => {
       data.value = result.data.list
+      paginationData.total = result.data.total
     })
     .catch(() => {})
     .finally(() => {})
 }
+
+const { paginationData, handleCurrentChange, handleSizeChange } = usePagination({
+  pageSize: 20
+})
+
+const loading = ref<boolean>(false)
+const visible = ref<boolean>(false)
+const formStateSubmitRef = ref()
+const showModal = () => {
+  visible.value = true
+}
+
+const handleOk = () => {
+  loading.value = true
+  formStateSubmitRef.value
+    ?.validateFields()
+    .then(() => {
+      createTableDataApi(formStateSubmit).then(() => {
+        message.success("新增成功")
+        visible.value = false
+        getTableData()
+      })
+    })
+    .catch(() => {})
+}
+
+const handleCancel = () => {
+  visible.value = false
+}
+
+interface FormState {
+  name: string
+  age: number
+}
+const formStateSubmit = reactive<FormState>({
+  name: "",
+  age: 0
+})
+
+watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
 </script>
 
 <template>
   <div class="app-container">
     <a-card>
       <div>
-        <a-form
-          ref="formRef"
-          name="advanced_search"
-          class="ant-advanced-search-form"
-          :model="formState"
-          @finish="onFinish"
-        >
+        <a-form ref="formRef" name="advanced_search" class="ant-advanced-search-form" :model="formState">
           <a-row :gutter="24">
             <template v-for="(e, key) in formState" :key="key">
               <a-col :span="8">
@@ -87,7 +119,33 @@ const getTableData = () => {
       </div>
     </a-card>
     <a-card>
-      <a-table :columns="columns" :data-source="data">
+      <a-button type="primary" @click="showModal">
+        <template #icon><plus-outlined /> </template>
+        添加
+      </a-button>
+      <a-modal v-model:visible="visible" title="Title" @ok="handleOk">
+        <a-form
+          :model="formStateSubmit"
+          ref="formStateSubmitRef"
+          name="basic"
+          :label-col="{ span: 6 }"
+          :wrapper-col="{ span: 16 }"
+          autocomplete="off"
+        >
+          <template #footer>
+            <a-button key="back" @click="handleCancel">Return</a-button>
+            <a-button key="submit" type="primary" :loading="loading" @click="handleOk">Submit</a-button>
+          </template>
+          <a-form-item label="name" name="name" :rules="[{ required: true, message: 'Please input your name!' }]">
+            <a-input v-model:value="formStateSubmit.name" />
+          </a-form-item>
+
+          <a-form-item label="age" name="age" :rules="[{ validator: checkAge }]">
+            <a-input-number v-model:value="formStateSubmit.age" />
+          </a-form-item>
+        </a-form>
+      </a-modal>
+      <a-table :columns="columns" :data-source="data" :pagination="false">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
             <span>
@@ -128,6 +186,16 @@ const getTableData = () => {
           </template>
         </template>
       </a-table>
+      <a-pagination
+        v-model:current="paginationData.currentPage"
+        show-quick-jumper
+        :total="paginationData.total"
+        :pageSize="paginationData.pageSize"
+        :pageSizeOptions="paginationData.pageSizes"
+        @change="handleCurrentChange"
+        @showSizeChange="handleSizeChange"
+      />
+      <br />
     </a-card>
   </div>
 </template>

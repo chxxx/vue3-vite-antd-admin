@@ -6,7 +6,7 @@
           <template v-for="(e, i) in formState" :key="i">
             <a-col :span="8">
               <a-form-item :name="i" :label="columns.find((e) => e.key === i)?.name">
-                <a-input v-model:value="formState[i as keyof typeof formState]" placeholder="placeholder" />
+                <a-input v-model:value="formState[i as keyof typeof formState]" placeholder="请输入" />
               </a-form-item>
             </a-col>
           </template>
@@ -24,20 +24,20 @@
         <template #icon><plus-outlined /></template>
         新增
       </a-button>
-      <a-modal v-model:visible="visible" title="Title" :afterClose="resetForm">
+      <a-modal v-model:visible="visible" :title="currentUpdateId ? '编辑' : '新增'" :afterClose="resetForm">
         <template #footer>
-          <a-button key="back" @click="handleCancel">Return</a-button>
-          <a-button key="submit" type="primary" :loading="loadingModal" @click="onSubmit">Submit</a-button>
+          <a-button key="back" @click="handleCancel">返回</a-button>
+          <a-button key="submit" type="primary" :loading="loadingModal" @click="onSubmit">提交</a-button>
         </template>
         <a-form :label-col="labelCol" :wrapper-col="wrapperCol" ref="submitFormRef" :model="modelRef">
           <a-form-item
             name="name"
-            label="name"
+            label="姓名"
             :rules="[{ required: true, message: 'Please input Name', trigger: 'blur' }]"
           >
             <a-input v-model:value="modelRef.name" />
           </a-form-item>
-          <a-form-item name="age" label="age" :rules="[{ validator: checkAge, trigger: 'blur' }]">
+          <a-form-item name="age" label="年龄" :rules="[{ validator: checkAge, trigger: 'blur' }]">
             <a-input-number id="inputNumber" v-model:value="modelRef.age" />
           </a-form-item>
           <!-- <a-form-item class="error-infos" :wrapper-col="{ span: 14, offset: 4 }" v-bind="errorInfos"> -->
@@ -49,7 +49,7 @@
       <a-table :columns="columns" :data-source="data" :pagination="false" :loading="loading">
         <template #headerCell="{ column }">
           <template v-if="column.key === 'name'">
-            <span> Name </span>
+            <span> {{ column.name }} </span>
           </template>
         </template>
 
@@ -89,16 +89,34 @@
         show-quick-jumper
       />
     </a-card>
+    <input v-model="text" placeholder="Type here" />
+    <p>{{ text1 }}</p>
   </div>
 </template>
 <script lang="ts" setup>
-import { ref, reactive, watch, toRaw } from "vue"
+import {
+  ref,
+  reactive,
+  watch,
+  toRaw,
+  onMounted,
+  onBeforeMount,
+  onBeforeUpdate,
+  onUnmounted,
+  onUpdated,
+  onBeforeUnmount,
+  computed
+} from "vue"
 import { getTableDataApi, createTableDataApi, updateTableDataApi, deleteTableDataApi } from "@/api/table"
 import { PlusOutlined } from "@ant-design/icons-vue"
 import { FormInstance, message, Modal } from "ant-design-vue"
 import { usePagination } from "@/hooks/usePagination"
 import { type IGetTableData } from "@/api/table/types/table"
 import { Rule } from "ant-design-vue/lib/form"
+const text = ref("")
+const text1 = computed(() => {
+  return text.value + "@"
+})
 const columns = [
   {
     name: "姓名",
@@ -263,4 +281,22 @@ const resetSearch = () => {
 
 /** 监听分页参数的变化 */
 watch([() => paginationData.currentPage, () => paginationData.pageSize], getTableData, { immediate: true })
+onBeforeMount(() => {
+  console.log("onBeforeMount")
+})
+onMounted(() => {
+  console.log("mounted")
+})
+onBeforeUpdate(() => {
+  console.log("onBeforeUpdate")
+})
+onUpdated(() => {
+  console.log("onUpdated")
+})
+onBeforeUnmount(() => {
+  console.log("onBeforeUnmount")
+})
+onUnmounted(() => {
+  console.log("onUnmounted")
+})
 </script>
